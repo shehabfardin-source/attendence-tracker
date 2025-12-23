@@ -65,7 +65,7 @@
 
 <script>
 // Replace with your Google Apps Script Web App URL
-const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwHNbsl8MyuVyHB4ah2XHj8fXv9BvC8IyhlEz6FfjIKN-S6RqLqASwYcxGNjZlotH_53A/exec";
 
 async function saveAttendance() {
     let month = document.getElementById('month').value;
@@ -78,7 +78,7 @@ async function saveAttendance() {
     }
 
     // Send data to Apps Script
-    let url = `${WEB_APP_URL}?action=add&month=${encodeURIComponent(month)}&student=${encodeURIComponent(student)}&dates=${encodeURIComponent(dates)}`;
+    let url = `${https://script.google.com/macros/s/AKfycbwHNbsl8MyuVyHB4ah2XHj8fXv9BvC8IyhlEz6FfjIKN-S6RqLqASwYcxGNjZlotH_53A/exec}?action=add&month=${encodeURIComponent(month)}&student=${encodeURIComponent(student)}&dates=${encodeURIComponent(dates)}`;
     await fetch(url);
     
     document.getElementById('dates').value = '';
@@ -86,7 +86,7 @@ async function saveAttendance() {
 }
 
 async function showSummary() {
-    let url = `${WEB_APP_URL}?action=get`;
+    let url = `${https://script.google.com/macros/s/AKfycbwHNbsl8MyuVyHB4ah2XHj8fXv9BvC8IyhlEz6FfjIKN-S6RqLqASwYcxGNjZlotH_53A/exec}?action=get`;
     let response = await fetch(url);
     let data = await response.json();
 
@@ -113,3 +113,4 @@ window.onload = showSummary;
 
 </body>
 </html>
+
