@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tuition Attendance Tracker (Google Sheet)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px #aaa;
+        }
+        input, select, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 90%;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Tuition Attendance Tracker</h2>
+
+    <label>Month:</label>
+    <select id="month">
+        <option value="">Select Month</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+    </select>
+
+    <br>
+    <input type="text" id="student" placeholder="Student Name">
+    <br>
+    <input type="text" id="dates" placeholder="Dates attended (comma separated)">
+    <br>
+    <button onclick="saveAttendance()">Save Attendance</button>
+
+    <h3>Attendance Summary</h3>
+    <div id="summary"></div>
+</div>
+
+<script>
+// Replace with your Google Apps Script Web App URL
+const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE";
+
+async function saveAttendance() {
+    let month = document.getElementById('month').value;
+    let student = document.getElementById('student').value.trim();
+    let dates = document.getElementById('dates').value.trim();
+
+    if (!month || !student || !dates) {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    // Send data to Apps Script
+    let url = `${WEB_APP_URL}?action=add&month=${encodeURIComponent(month)}&student=${encodeURIComponent(student)}&dates=${encodeURIComponent(dates)}`;
+    await fetch(url);
+    
+    document.getElementById('dates').value = '';
+    showSummary();
+}
+
+async function showSummary() {
+    let url = `${WEB_APP_URL}?action=get`;
+    let response = await fetch(url);
+    let data = await response.json();
+
+    let summaryDiv = document.getElementById('summary');
+    summaryDiv.innerHTML = '';
+
+    if (data.length === 0) {
+        summaryDiv.innerHTML = "<p>No attendance data yet.</p>";
+        return;
+    }
+
+    let ul = document.createElement('ul');
+    data.forEach(entry => {
+        let li = document.createElement('li');
+        li.textContent = `${entry.student} (${entry.month}): ${entry.total} days → [${entry.dates}]`;
+        ul.appendChild(li);
+    });
+    summaryDiv.appendChild(ul);
+}
+
+// Load summary on page load
+window.onload = showSummary;
+</script>
+
+</body>
+</html>
